@@ -7,6 +7,7 @@ import (
 
 type errorData struct {
 	ErrorOutputFromCli string
+	ErrorMessageString string
 }
 
 func TestErrorParsing1(t *testing.T) {
