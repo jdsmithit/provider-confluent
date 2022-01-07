@@ -27,7 +27,7 @@ var testConfig = Config{
 		Key:        config.GetEnvValue("PROVIDER_CONFLUENT_SCHEMA_REGISTRY_API_KEY", ""),
 		Secret:     config.GetEnvValue("PROVIDER_CONFLUENT_SCHEMA_REGISTRY_API_SECRET", ""),
 	},
-	SchemaPath: config.GetEnvValue("PROVIDER_CONFLUENT_SCHEMA_FILE_LOCATION", "C:\\misc\\tmp"),
+	SchemaPath: config.GetEnvValue("PROVIDER_CONFLUENT_SCHEMA_FILE_LOCATION", ""),
 }
 
 func TestSchemaDescribeCommand(t *testing.T) {
