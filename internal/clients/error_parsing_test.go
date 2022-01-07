@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+type errorData struct {
+	ErrorOutputFromCli string
+}
+
 func TestErrorParsing1(t *testing.T) {
 	errors := make(map[string]string)
 	errors["xa"] = ErrorExampleApiKeyInvalidEnvironment
