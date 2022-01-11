@@ -44,7 +44,7 @@ type ACLCreateCommand exec.Cmd
 func NewACLCreateCommand(acl v1alpha1.ACLBlock) (ACLCreateCommand, error) {
 	var command = ACLCreateCommand{
 		Path: clients.CliName,
-		Args: []string{"kafka", "acl", "create", "--cluster-scope", acl.ClusterScope, "--environment", acl.Environment, "-o", "json"},
+		Args: []string{"kafka", "acl", "create", "--environment", acl.Environment, "--cluster", acl.Cluster, "-o", "json"},
 	}
 
 	// Do some cast/assertion to reuse parseX funcs

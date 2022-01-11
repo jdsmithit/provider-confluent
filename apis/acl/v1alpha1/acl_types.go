@@ -30,7 +30,6 @@ type ACLBlock struct {
 	Principal    string `json:"principal"`
 	ResourceName string `json:"resource_name"`
 	ResourceType string `json:"resource_type"`
-	ClusterScope string `json:"clusterScope"`
 	Environment  string `json:"environment"`
 	Cluster      string `json:"cluster"`
 }

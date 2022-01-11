@@ -58,6 +58,9 @@ func parseResource(cmd *exec.Cmd, rName string, rType string) error {
 	case "CONSUMER_GROUP":
 		cmd.Args = append(cmd.Args, "--consumer-group", rName)
 		return nil
+	case "CLUSTER":
+		cmd.Args = append(cmd.Args, "--cluster-scope")
+		return nil
 	default:
 		return errors.New(errResourceTypeInvalid)
 	}

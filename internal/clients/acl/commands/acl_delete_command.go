@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"errors"
 	"github.com/dfds/provider-confluent/apis/acl/v1alpha1"
 	"os/exec"
 
@@ -20,7 +19,7 @@ type ACLDeleteCommand exec.Cmd
 func NewACLDeleteCommand(acl v1alpha1.ACLBlock) (ACLDeleteCommand, error) {
 	var command = ACLDeleteCommand{
 		Path: clients.CliName,
-		Args: []string{"kafka", "acl", "delete", "--cluster-scope", clusterScope, "--service-account", serviceAccount, "--environment", environment, "--prefix", prefix, "-o", "json"},
+		Args: []string{"kafka", "acl", "delete", "--environment", acl.Environment, "--cluster", acl.Cluster, "-o", "json"},
 	}
 
 	command.Args = append(command.Args, "--operation", acl.Operation)
@@ -49,14 +48,6 @@ func NewACLDeleteCommand(acl v1alpha1.ACLBlock) (ACLDeleteCommand, error) {
 	command.Args = append(command.Args, "--operation", acl.Operation)
 
 	command = interface{}(command).(ACLDeleteCommand)
-
-	if topic != "" && consumerGroup == "" {
-		command.Args = append(command.Args, "--topic", topic)
-	} else if topic == "" && consumerGroup != "" {
-		command.Args = append(command.Args, "--consumer-group", consumerGroup)
-	} else {
-		return ACLDeleteCommand{}, errors.New(errOnlyOneTopicOrConsumerGroupAllowed)
-	}
 
 	return command, nil
 }
