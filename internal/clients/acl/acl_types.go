@@ -1,11 +1,14 @@
 package acl
 
-import "github.com/dfds/provider-confluent/internal/clients"
+import (
+	"github.com/dfds/provider-confluent/apis/acl/v1alpha1"
+	"github.com/dfds/provider-confluent/internal/clients"
+)
 
 // IClient interface for service account client
 type IClient interface {
-	ACLCreate() ACLBlockList
-	ACLDelete() error
+	ACLCreate(acls []v1alpha1.ACLBlock) (ACLBlockList, error)
+	ACLDelete(acls []v1alpha1.ACLBlock) error
 	ACLList() (ACLBlockList, error)
 	ACLUpdate() error
 }

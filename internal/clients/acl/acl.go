@@ -2,13 +2,14 @@ package acl
 
 import (
 	"encoding/json"
+	"github.com/dfds/provider-confluent/apis/acl/v1alpha1"
 	"os/exec"
 	"strings"
 
 	"github.com/pkg/errors"
 
 	"github.com/dfds/provider-confluent/internal/clients"
-	"github.com/dfds/provider-confluent/internal/clients/apikey/commands"
+	"github.com/dfds/provider-confluent/internal/clients/acl/commands"
 )
 
 // Errors
@@ -26,19 +27,21 @@ func NewClient(c Config) IClient {
 	return &Client{Config: c}
 }
 
-func (c *Client) ApiKeyCreate(resource string, description string, serviceAccount string, environment string) (ApiKey, error) {
-	var resp ApiKey
+func (c *Client) ACLCreate(acls []v1alpha1.ACLBlock) (ACLBlockList, error) {
+	var resp ACLBlockList
 
-	var cmd = commands.NewApiKeyCreateCommand(resource, description, serviceAccount, environment)
-	out, err := clients.ExecuteCommand(exec.Cmd(cmd))
+	for _, acl := range acls {
+		var cmd, err = commands.NewACLCreateCommand(acl)
+		out, err := clients.ExecuteCommand(exec.Cmd(cmd))
 
-	if err != nil {
-		return resp, errorParser(out)
-	}
+		if err != nil {
+			return resp, errorParser(out)
+		}
 
-	err = json.Unmarshal(out, &resp)
-	if err != nil {
-		return resp, err
+		err = json.Unmarshal(out, &resp)
+		if err != nil {
+			return resp, err
+		}
 	}
 
 	return resp, nil
@@ -81,13 +84,16 @@ func (c *Client) ApiKeyUpdate(key string, description string) error {
 	return nil
 }
 
-func (c *Client) ApiKeyDelete(id string) error {
-	var cmd = commands.NewApiKeyDeleteCommand(id)
-	out, err := clients.ExecuteCommand(exec.Cmd(cmd))
+func (c *Client) ACLDelete(acls []v1alpha1.ACLBlock) error {
+	for _, acl := range acls {
+		var cmd = commands.NewACLDeleteCommand()
+		out, err := clients.ExecuteCommand(exec.Cmd(cmd))
 
-	if err != nil {
-		return errorParser(out)
+		if err != nil {
+			return errorParser(out)
+		}
 	}
+
 	return nil
 }
 

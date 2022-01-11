@@ -30,14 +30,14 @@ type ACLBlock struct {
 	Principal    string `json:"principal"`
 	ResourceName string `json:"resource_name"`
 	ResourceType string `json:"resource_type"`
+	ClusterScope string `json:"clusterScope"`
+	Environment  string `json:"environment"`
+	Cluster      string `json:"cluster"`
 }
 
 // ACLParameters are the configurable fields of a ACL.
 type ACLParameters struct {
 	ACLBlockList []ACLBlock `json:"aclBlockList"`
-	ClusterScope string     `json:"clusterScope"`
-	Environment  string     `json:"environment"`
-	Cluster      string     `json:"cluster"`
 }
 
 // ACLObservation are the observable fields of a ACL.

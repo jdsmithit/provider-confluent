@@ -41,34 +41,36 @@ type ACLCreateCommand exec.Cmd
 // }
 
 // NewACLCreateCommand is a factory method for ACL create command
-func NewACLCreateCommand(aclP v1alpha1.ACLParameters) (ACLCreateCommand, error) {
-
+func NewACLCreateCommand(acl v1alpha1.ACLBlock) (ACLCreateCommand, error) {
 	var command = ACLCreateCommand{
 		Path: clients.CliName,
-		Args: []string{"kafka", "acl", "create", "--cluster-scope", aclP.ClusterScope, "--environment", aclP.Environment, "-o", "json"},
+		Args: []string{"kafka", "acl", "create", "--cluster-scope", acl.ClusterScope, "--environment", acl.Environment, "-o", "json"},
 	}
-	for _, v := range aclP.ACLBlockList {
-		err := parsePatternType(&command, v.PatternType)
-		if err != nil {
-			return command, err
-		}
 
-		err = parsePermission(&command, v.Permission)
-		if err != nil {
-			return command, err
-		}
-
-		err = parseServiceAccount(&command, v.Principal)
-		if err != nil {
-			return command, err
-		}
-
-		err = parseResource(&command, v.ResourceName, v.ResourceType)
-		if err != nil {
-			return command, nil
-		}
-		command.Args = append(command.Args, "--operation", v.Operation)
+	// Do some cast/assertion to reuse parseX funcs
+	cmd := interface{}(command).(exec.Cmd)
+	err := parsePatternType(&cmd, acl.PatternType)
+	if err != nil {
+		return command, err
 	}
+
+	err = parsePermission(&cmd, acl.Permission)
+	if err != nil {
+		return command, err
+	}
+
+	err = parseServiceAccount(&cmd, acl.Principal)
+	if err != nil {
+		return command, err
+	}
+
+	err = parseResource(&cmd, acl.ResourceName, acl.ResourceType)
+	if err != nil {
+		return command, nil
+	}
+	command.Args = append(command.Args, "--operation", acl.Operation)
+
+	command = interface{}(command).(ACLCreateCommand)
 
 	return command, nil
 }
