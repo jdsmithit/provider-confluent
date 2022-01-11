@@ -10,28 +10,33 @@ import (
 )
 
 // ACLBlock
-// type ACLBlock struct {
-// 	Action         string   `json:"action"`
-// 	ClusterScope   string   `json:"clusterScope"`
-// 	ConsumerGroup  string   `json:"consumerGroup"`
-// 	Operations     []string `json:"operations"`
-// 	Prefix         string   `json:"prefix"`
-// 	ServiceAccount string   `json:"serviceAccount"`
-// 	Topic          string   `json:"topic"`
-// 	Environment    string   `json:"environment"`
-// 	Cluster        string   `json:"cluster"`
-// }
-
-// ACLBlock
 type ACLBlock struct {
+	Action string `json:"action"`
+	// ClusterScope   string   `json:"clusterScope"`
+	// ConsumerGroup  string   `json:"consumerGroup"`
+	Operations     []string `json:"operations"`
+	Prefix         bool     `json:"prefix"`
+	ServiceAccount string   `json:"serviceAccount"`
+	// Topic          string   `json:"topic"`
+	Environment  string `json:"environment"`
+	Cluster      string `json:"cluster"`
+	ResourceType string `json:"resourceType"`
+	ResourceName string `json:"resourceName"`
+}
+
+type ACLObserveBlock struct {
+	ServiceAccount string `json:"serviceAccount"`
+	Environment    string `json:"environment"`
+	Cluster        string `json:"cluster"`
+}
+
+type ACLResponseBlock struct {
 	Operation    string `json:"operation"`
 	PatternType  string `json:"pattern_type"`
 	Permission   string `json:"permission"`
 	Principal    string `json:"principal"`
 	ResourceName string `json:"resource_name"`
 	ResourceType string `json:"resource_type"`
-	Environment  string `json:"environment"`
-	Cluster      string `json:"cluster"`
 }
 
 // ACLParameters are the configurable fields of a ACL.
@@ -41,7 +46,9 @@ type ACLParameters struct {
 
 // ACLObservation are the observable fields of a ACL.
 type ACLObservation struct {
-	ACLBlockObservationList []ACLBlock `json:"aclBlockObservationList"`
+	// ACLBlockObservationList []ACLBlock `json:"aclBlockObservationList"`
+	ACLObservationList   []ACLObserveBlock  `json:"aclObservationList"`
+	ACLResponseBlockList []ACLResponseBlock `json:"aclResponseBlockList"`
 }
 
 // ACL Spec defines the desired state of a ACL.

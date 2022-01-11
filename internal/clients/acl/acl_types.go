@@ -7,10 +7,10 @@ import (
 
 // IClient interface for service account client
 type IClient interface {
-	ACLCreate(acls []v1alpha1.ACLBlock) (ACLBlockList, error)
-	ACLDelete(acls []v1alpha1.ACLBlock) error
-	ACLList() (ACLBlockList, error)
-	ACLUpdate() error
+	ACLCreate(acl v1alpha1.ACLBlock) (ACLResponseBlock, error)
+	ACLDelete(acl v1alpha1.ACLBlock) error
+	ACLList(serviceAccount string, environment string, cluster string) (ACLResponseBlockList, error)
+	// ACLUpdate() error
 }
 
 // Config is a configuration element for the service account client
@@ -23,7 +23,7 @@ type Client struct {
 	Config Config
 }
 
-type ACLBlock struct {
+type ACLResponseBlock struct {
 	Operation    string `json:"operation"`
 	PatternType  string `json:"pattern_type"`
 	Permission   string `json:"permission"`
@@ -32,4 +32,4 @@ type ACLBlock struct {
 	ResourceType string `json:"resource_type"`
 }
 
-type ACLBlockList []ACLBlock
+type ACLResponseBlockList []ACLResponseBlock
