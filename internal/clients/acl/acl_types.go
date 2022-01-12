@@ -3,6 +3,7 @@ package acl
 import (
 	"github.com/dfds/provider-confluent/apis/acl/v1alpha1"
 	"github.com/dfds/provider-confluent/internal/clients"
+	"net/http"
 )
 
 // IClient interface for service account client
@@ -20,7 +21,8 @@ type Config struct {
 
 // Client is a struct for service account client
 type Client struct {
-	Config Config
+	Config     Config
+	httpClient *http.Client
 }
 
 type ACLResponseBlock struct {

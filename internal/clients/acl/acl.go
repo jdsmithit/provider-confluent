@@ -2,6 +2,8 @@ package acl
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"os/exec"
 
 	"github.com/dfds/provider-confluent/apis/acl/v1alpha1"
@@ -24,7 +26,23 @@ const (
 
 // NewClient is a factory method for apikey client
 func NewClient(c Config) IClient {
-	return &Client{Config: c}
+	httpClient := http.DefaultClient
+	return &Client{Config: c, httpClient: httpClient}
+}
+
+func (c *Client) ACLCreateViaApi(boostrapServerId string, clusterId, region string, provider string) error {
+	reqUrl := fmt.Sprintf("%s/kafka/v3/clusters/%s/acls", composeBaseUrl(boostrapServerId, region, provider), clusterId)
+	req, err := http.NewRequest("GET", reqUrl, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", ))
+
+	return nil
+}
+
+func composeBaseUrl(boostrapServerId string, region string, provider string) string {
+	return fmt.Sprintf("https://%s.%s.%s.confluent.cloud", boostrapServerId, region, provider)
 }
 
 func (c *Client) ACLCreate(acl v1alpha1.ACLBlock) (ACLResponseBlock, error) {
